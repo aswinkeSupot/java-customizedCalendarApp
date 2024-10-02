@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -77,9 +77,11 @@
                             app:tint="@color/colorAccent" />
 
                         <TextView
+                            android:id="@+id/tvBookingUptoInfo"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Bookings open for travel upto Thursday, 2 May"
+                            tools:text="Bookings open for travel upto Thursday, 2 May"
+                            android:text=""
                             android:textColor="@color/black"
                             android:textSize="10dp" />
                     </LinearLayout>

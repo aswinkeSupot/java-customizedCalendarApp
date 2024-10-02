@@ -19,9 +19,12 @@ import com.aswin.calender.utils.LMTBaseBottomSheet;
 import com.aswin.calender.utils.utilities.CommonUtils;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class LmtCalendarFragment extends LMTBaseBottomSheet {
 
@@ -93,7 +96,32 @@ public class LmtCalendarFragment extends LMTBaseBottomSheet {
         return year;
     }
 
+    private boolean isBefore(int lastDayMonth, int lastDayYear, int currentMonth, int currentYear){
+        Calendar date1 = Calendar.getInstance();
+        Calendar date2 = Calendar.getInstance();
+
+        // Set the first date (month is 0-based, so subtract 1)
+        date1.set(lastDayYear, lastDayMonth - 1, 1);
+
+        // Set the second date (month is 0-based, so subtract 1)
+        date2.set(currentYear, currentMonth - 1, 1);
+
+        // Compare the two dates
+        return date1.before(date2);
+    }
+
     private void setCalendarAdapter() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_YEAR, 119);  // Adding 119 days to the current day
+        int lastDay = calendar.get(Calendar.DAY_OF_MONTH);
+        int lastMonth = calendar.get(Calendar.MONTH) + 1;  // Month is 0-based, so add 1
+        int lastYear = calendar.get(Calendar.YEAR);
+        // Define the date format
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, dd MMMM", Locale.ENGLISH);
+        // Format the date from the calendar instance
+        String uptoInfo = dateFormat.format(calendar.getTime());
+        binding.tvBookingUptoInfo.setText("Bookings open for travel upto " + uptoInfo);
+
         List<String> monthsList = new ArrayList<>();
 
         int currentMonth = (Calendar.getInstance().get(Calendar.MONTH) + 1);
@@ -117,7 +145,9 @@ public class LmtCalendarFragment extends LMTBaseBottomSheet {
         monthsList.add(CommonUtils.getEnglishMonth(month2) + " " + year2);
         monthsList.add(CommonUtils.getEnglishMonth(month3) + " " + year3);
         monthsList.add(CommonUtils.getEnglishMonth(month4) + " " + year4);
-        monthsList.add(CommonUtils.getEnglishMonth(month5) + " " + year5);
+        if(!isBefore(lastMonth,lastYear,Integer.parseInt(month5),Integer.parseInt(year5))){
+            monthsList.add(CommonUtils.getEnglishMonth(month5) + " " + year5);
+        }
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         binding.recyclerView.setLayoutManager(linearLayoutManager);

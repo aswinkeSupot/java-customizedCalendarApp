@@ -82,7 +82,7 @@ public class LmtCalendarAdapter extends RecyclerView.Adapter<LmtCalendarAdapter.
             for (int i = firstSelectable - 1; i <= lastSelectable; i++) {
                 dateSelectable.add(true);
             }
-        } else if (position == 1 || position == 2 || position == 3) {
+        } else if (position == 1 || position == 2 ) {
             calendar.add(Calendar.MONTH, position);
             emptySpace = calendar.get(Calendar.DAY_OF_WEEK);
             for (int i = 0; i < emptySpace - 1; i++) {
@@ -91,6 +91,28 @@ public class LmtCalendarAdapter extends RecyclerView.Adapter<LmtCalendarAdapter.
             int lastSelectable = calendar.getActualMaximum(Calendar.DATE);
             for (int i = 0; i <= lastSelectable; i++) {
                 dateSelectable.add(true);
+            }
+        } else if(position == 3){
+            calendar.add(Calendar.MONTH, 3);
+            emptySpace = calendar.get(Calendar.DAY_OF_WEEK);
+            for (int i = 0; i < emptySpace - 1; i++) {
+                dateSelectable.add(false);
+            }
+            int lastDate = calendar.getActualMaximum(Calendar.DATE);
+            Calendar calendar1 = Calendar.getInstance();
+            calendar1.add(Calendar.DATE, 119);
+            if(calendar.get(Calendar.MONTH)==calendar1.get(Calendar.MONTH)) {
+                int lastSelectable = calendar1.get(Calendar.DATE);
+                for (int i = 0; i < lastSelectable; i++) {
+                    dateSelectable.add(true);
+                }
+                for (int i = lastSelectable; i < lastDate; i++) {
+                    dateSelectable.add(false);
+                }
+            }else{
+                for (int i = 0; i <= lastDate; i++) {
+                    dateSelectable.add(false);
+                }
             }
         } else {
             calendar.add(Calendar.MONTH, 4);
